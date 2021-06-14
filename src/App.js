@@ -9,8 +9,8 @@ constructor(props){
   this.state={
     locationResult:'',
     errloc:'',
-    Map :false
-    
+    Map :false,
+   
   }
 }
 
@@ -18,9 +18,10 @@ constructor(props){
 
   generatLocation=async (event)=>{
     event.preventDefault();
+    let key=process.env.REACT_APP_APIofLocation;
     let location= event.target.addlocation.value;
     // console.log(location);
-    let sharchLoc=`https://us1.locationiq.com/v1/search.php?key=pk.a7e855d378594e54a33745813035d5e3&q=${location}&format=json`
+    let sharchLoc=`https://us1.locationiq.com/v1/search.php?key=${key}&q=${location}&format=json`
 
     try{
     let result =await axios.get(sharchLoc);
@@ -40,8 +41,11 @@ constructor(props){
   }
 
   render(){
+    let keys=process.env.REACT_APP_APIofLocation;
     return(
+    
       <div>
+        
         <h1>react axios</h1>
         <form onSubmit={this.generatLocation}>
           <input type='text'  placeholder="location" name='addlocation'/>
@@ -51,11 +55,13 @@ constructor(props){
         <p>{this.state.locationResult.lon}</p>
         <p>{this.state.locationResult.lat}</p>
         <p>{this.state.errloc}</p>
-        {this.state.Map &&<img src={`https://maps.locationiq.com/v3/staticmap?key=pk.43fed3791d35ddb76aa14f749c6d3080&center=${this.state.locationResult.lat},${this.state.locationResult.lon}&size=400x400`} alt='map'/>}
+        {this.state.Map &&<img src={`https://maps.locationiq.com/v3/staticmap?key=${keys}&center=${this.state.locationResult.lat},${this.state.locationResult.lon}&size=400x400`} alt='map'/>}
 
         
-      </div>
-    )
-  }
+</div>
+)
+}
 }
 export default App;
+
+     
