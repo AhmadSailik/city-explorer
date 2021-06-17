@@ -38,7 +38,7 @@ class App extends React.Component {
 
     if(location.toLowerCase()=='amman'||location.toLowerCase()=='paris'||location.toLowerCase()=='seattle'){
 
-      let weatherJason=`http://localhost:3030/dataOfWeatherJSON?dataOfcity=${location}`;
+      let weatherJason=`https://city-weathe.herokuapp.com/dataOfWeatherJSON?dataOfcity=${location}`;
 
       try{
         let resultOfWeatherJSON = await axios.get(weatherJason);
