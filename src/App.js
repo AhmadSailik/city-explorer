@@ -18,7 +18,9 @@ class App extends React.Component {
       listItemsWeath: '',
       movie: [],
       WeatherOfAPI: [],
+      WeatherOfJSON: [{data:[]}],
       showMovies: false,
+      jsonshow:false,
     }
   }
 
@@ -34,7 +36,31 @@ class App extends React.Component {
     let sharchLoc = `https://api.locationiq.com/v1/autocomplete.php?key=${key}&q=${location}&format=json`;
     let movieURL = `https://city-weathe.herokuapp.com/dataOfmovie?query=${location}`;
 
+    if(location.toLowerCase()=='amman'||location.toLowerCase()=='paris'||location.toLowerCase()=='seattle'){
 
+      let weatherJason=`http://localhost:3030/dataOfWeatherJSON?dataOfcity=${location}`;
+
+      try{
+        let resultOfWeatherJSON = await axios.get(weatherJason);
+        this.setState({
+          WeatherOfJSON:resultOfWeatherJSON.data,
+          jsonshow:true,
+        })
+      }catch(error){
+        this.setState({
+          WeatherOfJSON: error.res,
+          
+        })
+      }
+    }else{
+      this.setState({
+        WeatherOfJSON: [{data:[]}],
+        jsonshow:false,
+        
+      })
+    }
+    
+console.log(this.state.WeatherOfJSON);
 
     try {
       let result = await axios.get(sharchLoc);
@@ -67,18 +93,15 @@ class App extends React.Component {
 
     try {
       let weatherLocAPI = `https://city-weathe.herokuapp.com/dataOfWeatherAPI?lat=${this.state.locationResult.lat}&lon=${this.state.locationResult.lon}`;
-      console.log('ahmad');
       let resultOfWeather = await axios.get(weatherLocAPI);
 
       this.setState({
         WeatherOfAPI: resultOfWeather.data,
         weatherShowAPI:true,
       });
-
-      console.log(resultOfWeather.data);
     } catch(error) {
       this.setState({
-        WeatherOfAPI: error.response,
+        WeatherOfAPI: error.res,
         weatherShowAPI:false,
       });
     }
@@ -118,6 +141,8 @@ class App extends React.Component {
         <Main
           movieState={this.state.movie}
           weatherStatAPI={this.state.WeatherOfAPI}
+          weatherStatJSON={this.state.WeatherOfJSON}
+          jsonshow={this.state.jsonshow}
         />
 
         {this.state.Map && <img src={`https://maps.locationiq.com/v3/staticmap?key=${keys}&center=${this.state.locationResult.lat},${this.state.locationResult.lon}`} alt='map' />}
