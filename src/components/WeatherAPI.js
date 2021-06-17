@@ -1,5 +1,5 @@
 import React from 'react';
-import Main from './Main';
+
 import { ListGroup, Container, Row, Col } from 'react-bootstrap';
 
 class WeatherAPI extends React.Component {
@@ -11,6 +11,10 @@ class WeatherAPI extends React.Component {
                         <Col>
                             <ListGroup >
                                 <ListGroup.Item action variant="primary">📅: {this.props.date}</ListGroup.Item>
+                            </ListGroup>
+                        </Col>
+                        <Col>
+                            <ListGroup >
                                 <ListGroup.Item action variant="secondary">🤫:{this.props.decription}</ListGroup.Item>
                             </ListGroup>
                         </Col>
